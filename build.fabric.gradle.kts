@@ -59,9 +59,15 @@ loom.runs.named("client") {
     client()
 }
 
+// The mod references no Minecraft class, so each build is MC-agnostic within its generation.
+// We still inject a per-generation supported range + the Mixin compatibility level required by
+// the target mod's bytecode (Flashback is v65 on 1.21.x, v69 on 26.x → Mixin must match).
+val is26 = stonecutter.eval(mcVersion, ">=26.1")
 val expandProps = mapOf(
     "version" to "${property("mod.version")}+$mcVersion",
     "minecraft" to mcVersion,
+    "mc_range" to if (is26) ">=26.1 <26.2" else ">=1.21 <1.22",
+    "mixin_compat" to if (is26) "JAVA_25" else "JAVA_21",
 )
 
 tasks.named<ProcessResources>("processResources") {
@@ -69,6 +75,7 @@ tasks.named<ProcessResources>("processResources") {
     exclude("META-INF/neoforge.mods.toml")
     inputs.properties(expandProps)
     filesMatching("fabric.mod.json") { expand(expandProps) }
+    filesMatching("flashbacksettings.mixins.json") { expand(expandProps) }
 }
 
 // Every task that reads the generated sources must run after they are produced.

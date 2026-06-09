@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "fr.zeffut.flashbacksettings.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "${mixin_compat}",
   "mixins": [
     "FlashbackMixin"
   ],
