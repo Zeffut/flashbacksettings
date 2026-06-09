@@ -3,7 +3,7 @@
   "id": "flashbacksettings",
   "version": "${version}",
   "name": "Flashback Settings",
-  "description": "Ajoute des réglages manquants au mod Flashback, à commencer par le choix du dossier d'enregistrement des replays. Télémétrie anonyme activée par défaut, désactivable.",
+  "description": "Adds missing settings to the Flashback mod, starting with choosing the replay save folder. Anonymous telemetry, enabled by default and opt-out.",
   "authors": [
     "Zeffut"
   ],
@@ -24,7 +24,7 @@
   ],
   "depends": {
     "fabricloader": ">=0.18.0",
-    "minecraft": "${minecraft}",
+    "minecraft": ">=1.21 <1.22",
     "flashback": "*"
   }
 }

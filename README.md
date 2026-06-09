@@ -11,7 +11,7 @@ Un petit mod **client Fabric** qui ajoute des réglages manquants au mod
 ## Compatibilité
 
 - **Loader :** Fabric uniquement (Flashback est exclusivement Fabric).
-- **Versions Minecraft :** 1.21.11 et 26.1.2.
+- **Versions Minecraft :** toute la plage 1.21.x supportée par Flashback (1.21, 1.21.1, 1.21.4 → 1.21.11). 26.1.x à venir (build JDK 25). Le mod ne référence aucune classe Minecraft : un seul build couvre toute la plage.
 - **Dépendance obligatoire :** [Flashback](https://modrinth.com/mod/flashback) doit être installé.
 
 ## Utilisation
