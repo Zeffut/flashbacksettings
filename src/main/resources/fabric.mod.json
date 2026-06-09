@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "flashbacksettings",
+  "version": "${version}",
+  "name": "Flashback Settings",
+  "description": "Ajoute des réglages manquants au mod Flashback, à commencer par le choix du dossier d'enregistrement des replays. Télémétrie anonyme activée par défaut, désactivable.",
+  "authors": [
+    "Zeffut"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/flashbacksettings",
+    "sources": "https://github.com/Zeffut/flashbacksettings"
+  },
+  "license": "LicenseRef-PolyForm-Noncommercial-1.0.0",
+  "environment": "client",
+  "icon": "assets/flashbacksettings/icon.png",
+  "entrypoints": {
+    "client": [
+      "fr.zeffut.flashbacksettings.fabric.FlashbackSettingsFabric"
+    ]
+  },
+  "mixins": [
+    "flashbacksettings.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.18.0",
+    "minecraft": "${minecraft}",
+    "flashback": "*"
+  }
+}

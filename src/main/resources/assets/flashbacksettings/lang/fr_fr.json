@@ -1,0 +1,7 @@
+{
+  "flashbacksettings.config.title": "Flashback Settings",
+  "flashbacksettings.config.replay_folder": "Dossier d'enregistrement des replays",
+  "flashbacksettings.config.replay_folder.tooltip": "Dossier où Flashback enregistre les replays. Laisser vide pour le défaut de Flashback (.minecraft/flashback/replays).",
+  "flashbacksettings.config.telemetry": "Télémétrie anonyme",
+  "flashbacksettings.config.telemetry.tooltip": "Envoie des statistiques d'usage anonymes. Désactivable."
+}

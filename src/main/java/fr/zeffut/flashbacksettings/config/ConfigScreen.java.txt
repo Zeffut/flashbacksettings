@@ -1,0 +1,61 @@
+// ============================================================================================
+// ConfigScreen — DOCUMENTED STUB, NOT COMPILED.
+//
+// This file ends in `.java.txt` ON PURPOSE: the Java compiler ignores it, so the template build
+// stays green WITHOUT pulling any GUI dependency (Screen API + ModMenu vary a lot across MC
+// versions and would break the multi-version matrix). /mc-mod (or you, later) can activate an
+// in-game config menu by:
+//   1. renaming this file to `ConfigScreen.java`;
+//   2. adding the GUI deps (ModMenu on Fabric, a config-screen lib on NeoForge) in the
+//      build.*.gradle.kts, gated per loader/version as needed;
+//   3. registering the ModMenu entrypoint in fabric.mod.json:
+//        "modmenu": [ "fr.zeffut.flashbacksettings.config.ConfigScreenFactory" ]
+//   4. wiring the screen to ModConfig (read/write `telemetry` + `settings`).
+//
+// The sketch below targets the 1.21.x Yarn API. Adapt imports with `//? if >=26.1 { } else { }`
+// for 26.x (e.g. net.minecraft.util.Identifier -> net.minecraft.resources.Identifier), and gate
+// the whole file with `//? if fabric {` if it stays Fabric-only.
+// ============================================================================================
+/*
+//? if fabric {
+package fr.zeffut.flashbacksettings.config;
+
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.text.Text;
+
+public class ConfigScreen extends Screen {
+    private final Screen parent;
+
+    public ConfigScreen(Screen parent) {
+        super(Text.literal("Flashback Settings"));
+        this.parent = parent;
+    }
+
+    @Override
+    protected void init() {
+        ModConfig cfg = ModConfig.get();
+
+        // Telemetry toggle.
+        addDrawableChild(ButtonWidget.builder(
+                Text.literal("Telemetry: " + (cfg.telemetry() ? "ON" : "OFF")),
+                btn -> {
+                    cfg.setTelemetry(!cfg.telemetry());
+                    btn.setMessage(Text.literal("Telemetry: " + (cfg.telemetry() ? "ON" : "OFF")));
+                })
+                .dimensions(width / 2 - 100, height / 2 - 20, 200, 20)
+                .build());
+
+        // Done.
+        addDrawableChild(ButtonWidget.builder(Text.literal("Done"), btn -> close())
+                .dimensions(width / 2 - 100, height / 2 + 10, 200, 20)
+                .build());
+    }
+
+    @Override
+    public void close() {
+        if (client != null) client.setScreen(parent);
+    }
+}
+//?}
+*/
