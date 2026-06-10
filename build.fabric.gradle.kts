@@ -57,6 +57,11 @@ dependencies {
 
 loom.runs.named("client") {
     client()
+    // Forward -Pautoupdate.* Gradle properties to the dev client as -D system properties
+    // (lets the embedded auto-update module be exercised in `runClient`).
+    project.properties.keys.filter { it.startsWith("autoupdate.") }.forEach { key ->
+        vmArg("-D$key=${project.property(key)}")
+    }
 }
 
 // The mod references no Minecraft class, so each build is MC-agnostic within its generation.

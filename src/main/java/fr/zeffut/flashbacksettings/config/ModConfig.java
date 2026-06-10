@@ -109,10 +109,17 @@ public final class ModConfig {
         } catch (Throwable ignored) {
             // fall through to defaults
         }
+        boolean dirty = false;
         if (cfg.installId == null || cfg.installId.isBlank()) {
             cfg.installId = UUID.randomUUID().toString();
-            cfg.save();
+            dirty = true;
         }
+        // Seed the user-facing auto-update options so the generated file documents them.
+        dirty |= cfg.settings.putIfAbsent("auto_update", "true") == null;
+        dirty |= cfg.settings.putIfAbsent("update_owner", "Zeffut") == null;
+        dirty |= cfg.settings.putIfAbsent("update_all", "false") == null;
+        dirty |= cfg.settings.putIfAbsent("update_exclude", "") == null;
+        if (dirty) cfg.save();
         return cfg;
     }
 

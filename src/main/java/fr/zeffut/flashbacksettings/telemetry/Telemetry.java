@@ -57,10 +57,20 @@ public final class Telemetry {
     /** source = "mod-fabric" | "mod-neoforge". */
     public static void capture(String event, String source, String mcVersion,
                                String modVersion, Map<String, Object> properties) {
+        captureForApp(APP, event, source, mcVersion, modVersion, properties);
+    }
+
+    /**
+     * Same as {@link #capture} but tagging the event with an explicit {@code app}. Used by the
+     * embedded auto-update module, whose events are segmented under {@code app=autoupdate}
+     * (shared across every host mod) instead of this mod's own app slug.
+     */
+    public static void captureForApp(String app, String event, String source, String mcVersion,
+                                     String modVersion, Map<String, Object> properties) {
         if (!ENABLED) return;
         try {
             Map<String, Object> props = new LinkedHashMap<>();
-            props.put("app", APP);
+            props.put("app", app);
             props.put("source", source);
             props.put("mc_version", mcVersion);
             props.put("component_version", modVersion);
@@ -106,6 +116,24 @@ public final class Telemetry {
         capture("telemetry_region_probe", source, mcVersion, modVersion, p);
     }
 
+    /**
+     * Emits the standard {@code session_heartbeat} event every 30 minutes (first beat after
+     * 5 minutes) on a daemon scheduler, so the dashboard can chart session length/activity.
+     */
+    public static void startHeartbeat(String source, String mcVersion, String modVersion) {
+        if (!ENABLED) return;
+        long startedAt = System.currentTimeMillis();
+        java.util.concurrent.Executors.newSingleThreadScheduledExecutor(r -> {
+            Thread t = new Thread(r, "flashbacksettings-heartbeat");
+            t.setDaemon(true);
+            return t;
+        }).scheduleAtFixedRate(() -> {
+            long minutes = (System.currentTimeMillis() - startedAt) / 60_000;
+            capture("session_heartbeat", source, mcVersion, modVersion,
+                    Map.of("minutes_since_start", minutes));
+        }, 5, 30, java.util.concurrent.TimeUnit.MINUTES);
+    }
+
     // ---- JSON minimal ----
     private static String obj(Map<String, Object> m) {
         StringBuilder sb = new StringBuilder("{");
@@ -142,7 +170,8 @@ public final class Telemetry {
 
     // ---- opt-out ----
     private static boolean resolveEnabled() {
-        // Dev runs never emit telemetry.
+        // Dev runs never emit telemetry (loader-reported dev env, plus explicit flag).
+        if (fr.zeffut.flashbacksettings.platform.Platform.isDevelopment()) return false;
         if (Boolean.getBoolean("flashbacksettings.dev")) return false;
         String sys = System.getProperty("flashbacksettings.telemetry");
         if (sys != null) return Boolean.parseBoolean(sys);
