@@ -4,7 +4,8 @@
   "package": "fr.zeffut.flashbacksettings.mixin",
   "compatibilityLevel": "${mixin_compat}",
   "mixins": [
-    "FlashbackMixin"
+    "FlashbackMixin",
+    "PreferencesMixin"
   ],
   "injectors": {
     "defaultRequire": 1

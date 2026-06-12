@@ -17,23 +17,14 @@ Un petit mod **client Fabric** qui ajoute des réglages manquants au mod
 ## Utilisation
 
 1. Installez Fabric Loader, Flashback et Flashback Settings dans `.minecraft/mods`.
-2. Lancez le jeu une fois : le fichier `config/flashbacksettings.json` est créé.
-3. Renseignez le chemin voulu dans `settings.replay_folder`, puis relancez le jeu :
+2. Dans un replay, ouvrez les **Préférences de Flashback** : une section **« Flashback Settings »**
+   y apparaît, avec le champ **« Replay save folder »**. Le mod est transparent — il n'a pas de menu
+   propre, ses réglages sont ajoutés directement à ceux de Flashback.
+3. Renseignez le dossier voulu (laissez vide pour le défaut `.minecraft/flashback/replays`).
+   La valeur est appliquée au **prochain démarrage**.
 
-   ```json
-   {
-     "telemetry": true,
-     "install_id": "…",
-     "settings": {
-       "replay_folder": "D:/Replays/Minecraft"
-     }
-   }
-   ```
-
-   Laissez la valeur vide (ou supprimez la clé) pour revenir au dossier par défaut de Flashback.
-
-> Un menu de configuration in-game est prévu (le code est présent en stub, non compilé pour
-> l'instant afin de rester stable sur toutes les versions).
+> Le réglage est aussi modifiable « à la main » dans `config/flashbacksettings.json`
+> (`settings.replay_folder`), le fichier sert de stockage.
 
 ## Comment ça marche
 
