@@ -5,7 +5,7 @@
   "compatibilityLevel": "${mixin_compat}",
   "mixins": [
     "FlashbackMixin",
-    "PreferencesMixin"
+    "FlashbackConfigMixin"
   ],
   "injectors": {
     "defaultRequire": 1

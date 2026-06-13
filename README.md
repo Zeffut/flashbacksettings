@@ -16,11 +16,13 @@ Un petit mod **client Fabric** qui ajoute des réglages manquants au mod
 
 ## Utilisation
 
-1. Installez Fabric Loader, Flashback et Flashback Settings dans `.minecraft/mods`.
-2. Dans un replay, ouvrez les **Préférences de Flashback** : une section **« Flashback Settings »**
-   y apparaît, avec le champ **« Replay save folder »**. Le mod est transparent — il n'a pas de menu
-   propre, ses réglages sont ajoutés directement à ceux de Flashback.
-3. Renseignez le dossier voulu (laissez vide pour le défaut `.minecraft/flashback/replays`).
+1. Installez Fabric Loader, Flashback et Flashback Settings dans `.minecraft/mods`
+   (+ [Mod Menu](https://modrinth.com/mod/modmenu) pour ouvrir l'écran de config).
+2. Menu **Mods → Flashback → Config** : l'option **« Replay save folder »** est ajoutée
+   **directement dans l'écran de réglages de Flashback**. Le mod est transparent — il n'a pas de
+   menu propre.
+3. Cliquez **« Browse for folder… »** pour choisir le dossier via un sélecteur de fichiers natif
+   (ou tapez le chemin ; laissez vide pour le défaut `.minecraft/flashback/replays`).
    La valeur est appliquée au **prochain démarrage**.
 
 > Le réglage est aussi modifiable « à la main » dans `config/flashbacksettings.json`
@@ -28,8 +30,11 @@ Un petit mod **client Fabric** qui ajoute des réglages manquants au mod
 
 ## Comment ça marche
 
-Un Mixin intercepte `com.moulberry.flashback.Flashback#getReplayFolder()` et renvoie le dossier
-configuré quand il est défini ; sinon le comportement par défaut de Flashback est conservé.
+- L'option est injectée dans l'écran de config de Flashback : un mixin redirige l'appel
+  `Lattice.createConfigScreen(...)` de `Flashback.createConfigScreen` pour y ajouter notre champ
+  (rendu par Lattice, la lib de config de Flashback) + un bouton `tinyfd` (LWJGL) pour le sélecteur.
+- À l'exécution, un mixin intercepte `com.moulberry.flashback.Flashback#getReplayFolder()` et renvoie
+  le dossier configuré quand il est défini ; sinon le comportement par défaut de Flashback est conservé.
 
 ## Télémétrie
 

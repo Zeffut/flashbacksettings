@@ -24,6 +24,28 @@ repositories {
     maven("https://api.modrinth.com/maven") { name = "Modrinth" }
 }
 
+// Flashback's config-screen library (Lattice) is bundled inside Flashback and not published on
+// Modrinth for every MC. We compile our config injection against it: extract it from the resolved
+// Flashback jar on first build so the repo builds from a clean checkout (lattice/ is gitignored).
+run {
+    val latticeProp = findProperty("deps.lattice") as String?
+    if (latticeProp != null && latticeProp.endsWith(".jar")) {
+        val latticeFile = rootProject.file(latticeProp)
+        if (!latticeFile.exists()) {
+            val fbJar = configurations.detachedConfiguration(
+                dependencies.create("maven.modrinth:flashback:${property("deps.flashback")}")
+            ).apply { isTransitive = false }.resolve().first()
+            copy {
+                from(zipTree(fbJar))
+                include("META-INF/jars/lattice*.jar")
+                eachFile { path = name } // flatten META-INF/jars/<x>.jar -> <x>.jar
+                into(latticeFile.parentFile)
+                includeEmptyDirs = false
+            }
+        }
+    }
+}
+
 dependencies {
     // Generic add(configuration, notation) avoids relying on Loom's Kotlin DSL accessors,
     // which Gradle does not generate for Stonecutter's non-`build.gradle.kts` buildscripts.
@@ -53,6 +75,19 @@ dependencies {
     // install at runtime (declared as a hard dependency in fabric.mod.json). The Modrinth maven
     // exposes each release by its version id (deps.flashback), set per Stonecutter node.
     add("modCompileOnly", "maven.modrinth:flashback:${property("deps.flashback")}")
+
+    // Lattice is Flashback's own config-screen library (bundled inside Flashback at runtime). We
+    // compile our config-screen injection against it. deps.lattice is a Modrinth version id when
+    // published for this MC, or a local extracted jar path (lattice/<file>.jar) otherwise.
+    val lattice = findProperty("deps.lattice") as String?
+    if (lattice != null && lattice.isNotBlank()) {
+        if (lattice.endsWith(".jar")) {
+            add("modCompileOnly", files(rootProject.file(lattice)))
+        } else {
+            add("modCompileOnly", "maven.modrinth:lattice:$lattice")
+        }
+    }
+
 }
 
 loom.runs.named("client") {
