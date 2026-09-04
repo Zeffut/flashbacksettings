@@ -106,7 +106,7 @@ val is26 = stonecutter.eval(mcVersion, ">=26.1")
 val expandProps = mapOf(
     "version" to "${property("mod.version")}+$mcVersion",
     "minecraft" to mcVersion,
-    "mc_range" to if (is26) ">=26.1 <26.2" else ">=1.21 <1.22",
+    "mc_range" to if (stonecutter.eval(mcVersion, ">=26.2")) ">=26.2 <26.3" else if (is26) ">=26.1 <26.2" else ">=1.21 <1.22",
     "mixin_compat" to if (is26) "JAVA_25" else "JAVA_21",
 )
 
