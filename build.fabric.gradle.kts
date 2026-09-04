@@ -159,7 +159,7 @@ if (modrinthToken.isPresent) {
         changelog.set("Minecraft 26.2 Fabric support.")
         modLoaders.add("fabric")
         modrinth {
-            projectId.set("flashbacksettings")
+            projectId.set("mOIDKWOa")
             accessToken.set(modrinthToken)
             minecraftVersions.add(mcVersion)
         }
