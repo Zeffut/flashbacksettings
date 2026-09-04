@@ -156,6 +156,7 @@ if (modrinthToken.isPresent) {
         displayName.set("${property("mod.name")} ${property("mod.version")} (Fabric $mcVersion)")
         version.set("${property("mod.version")}+fabric-$mcVersion")
         type = me.modmuss50.mpp.ReleaseType.STABLE
+        changelog.set("Minecraft 26.2 Fabric support.")
         modLoaders.add("fabric")
         modrinth {
             projectId.set("flashbacksettings")
