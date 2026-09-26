@@ -71,6 +71,12 @@ dependencies {
 
     add("modImplementation", "net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
 
+    // Minecraft 26.3's client dependency metadata exposes the base LWJGL module but not
+    // GLFW or TinyFD to the compile classpath. They are supplied by the Minecraft runtime;
+    // declare the matching 26.3 LWJGL version only for compilation.
+    add("compileOnly", "org.lwjgl:lwjgl-glfw:3.4.3")
+    add("compileOnly", "org.lwjgl:lwjgl-tinyfd:3.4.3")
+
     // Flashback is the host mod we hook into. Compile-only: it is provided by the player's
     // install at runtime (declared as a hard dependency in fabric.mod.json). The Modrinth maven
     // exposes each release by its version id (deps.flashback), set per Stonecutter node.
@@ -106,7 +112,7 @@ val is26 = stonecutter.eval(mcVersion, ">=26.1")
 val expandProps = mapOf(
     "version" to "${property("mod.version")}+$mcVersion",
     "minecraft" to mcVersion,
-    "mc_range" to if (stonecutter.eval(mcVersion, ">=26.2")) ">=26.2 <26.3" else if (is26) ">=26.1 <26.2" else ">=1.21 <1.22",
+    "mc_range" to if (stonecutter.eval(mcVersion, ">=26.2")) ">=26.2 <26.4" else if (is26) ">=26.1 <26.2" else ">=1.21 <1.22",
     "mixin_compat" to if (is26) "JAVA_25" else "JAVA_21",
 )
 
@@ -146,6 +152,15 @@ tasks.withType<JavaCompile>().configureEach {
     options.release.set(javaTarget)
 }
 
+// The identity mapping used by Minecraft 26.x has no intermediary namespace, so
+// Loom cannot remap a sources archive. Keep the installable remapped mod jar and
+// omit only the invalid remapped sources artifact for these targets.
+if (is26) {
+    tasks.named("remapSourcesJar") {
+        enabled = false
+    }
+}
+
 // ---- Modrinth publishing (guarded) ----------------------------------------------------------
 // Only configures the Modrinth target when MODRINTH_TOKEN is present, so plain `build` never
 // fails for lack of a token. Publish with: MODRINTH_TOKEN=xxx ./gradlew :<node>:publishMods
@@ -156,7 +171,7 @@ if (modrinthToken.isPresent) {
         displayName.set("${property("mod.name")} ${property("mod.version")} (Fabric $mcVersion)")
         version.set("${property("mod.version")}+fabric-$mcVersion")
         type = me.modmuss50.mpp.ReleaseType.STABLE
-        changelog.set("Minecraft 26.2 Fabric support.")
+        changelog.set("Minecraft 26.3 Fabric support.")
         modLoaders.add("fabric")
         modrinth {
             projectId.set("mOIDKWOa")
