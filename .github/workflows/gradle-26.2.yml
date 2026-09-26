@@ -1,4 +1,4 @@
-name: Gradle 26.2 Fabric
+name: Gradle 26.3 Fabric
 
 on:
   pull_request:
@@ -11,8 +11,8 @@ permissions:
   contents: read
 
 jobs:
-  build-26_2-fabric:
-    name: Build 26.2 Fabric (JDK 25)
+  build-26_3-fabric:
+    name: Build 26.3 Fabric (JDK 25)
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -28,15 +28,15 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Build and test Minecraft 26.2 Fabric
-        run: ./gradlew :26.2-fabric:clean :26.2-fabric:build :26.2-fabric:test --stacktrace --no-daemon
+      - name: Build and test Minecraft 26.3 Fabric
+        run: ./gradlew :26.3-fabric:clean :26.3-fabric:build :26.3-fabric:test --stacktrace --no-daemon
 
       - name: Upload remapped mod jar
         uses: actions/upload-artifact@v4
         with:
-          name: flashbacksettings-26.2-fabric
+          name: flashbacksettings-26.3-fabric
           path: |
-            versions/26.2-fabric/build/libs/*-fabric-*.jar
-            !versions/26.2-fabric/build/libs/*-sources.jar
+            versions/26.3-fabric/build/libs/*-fabric-*.jar
+            !versions/26.3-fabric/build/libs/*-sources.jar
           if-no-files-found: error
           retention-days: 14
