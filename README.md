@@ -11,7 +11,7 @@ Un petit mod **client Fabric** qui ajoute des réglages manquants au mod
 ## Compatibilité
 
 - **Loader :** Fabric uniquement (Flashback est exclusivement Fabric).
-- **Versions Minecraft :** toutes les versions supportées par Flashback — la plage 1.21.x (1.21, 1.21.1, 1.21.4 → 1.21.11) **et** la série 26.1.x (26.1, 26.1.1, 26.1.2). Le mod ne référence aucune classe Minecraft : un build par génération suffit (1.21.x compilé en Java 21, 26.1.x en Java 25).
+- **Versions Minecraft :** la plage 1.21.x (1.21, 1.21.1, 1.21.4 → 1.21.11), la série 26.1.x (26.1, 26.1.1, 26.1.2), **26.2 et 26.3**, avec une version de Flashback compatible installée. Les cibles de build sont `1.21.11-fabric` (Java 21), `26.1.2-fabric`, `26.2-fabric` et `26.3-fabric` (Java 25). Les sources actuelles déclarent la plage Minecraft `>=26.2 <26.4` pour ces deux cibles ; les releases Modrinth 26.2 et 26.3 restent proposées séparément pour chaque version Minecraft.
 - **Dépendance obligatoire :** [Flashback](https://modrinth.com/mod/flashback) doit être installé.
 
 ## Utilisation
@@ -54,7 +54,15 @@ Aucune IP ni géolocalisation collectée ; un `install_id` anonyme et persistant
 JAVA_HOME=<JDK21> ./gradlew :1.21.11-fabric:build
 # 26.1.2 (JDK 25 requis)
 JAVA_HOME=<JDK25> ./gradlew :26.1.2-fabric:build
+# 26.2 (JDK 25 requis)
+JAVA_HOME=<JDK25> ./gradlew :26.2-fabric:build
+# 26.3 (JDK 25 requis)
+JAVA_HOME=<JDK25> ./gradlew :26.3-fabric:build
 ```
+
+Remplacez `<JDK21>` / `<JDK25>` par le chemin de votre JDK : Fabric Loom exige que
+Gradle soit lui-même lancé avec la version Java de la cible. Les JARs installables
+sont générés dans `versions/<cible>/build/libs/` (ne pas utiliser les JARs `-sources`).
 
 ## Licence
 
