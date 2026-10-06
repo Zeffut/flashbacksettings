@@ -73,9 +73,13 @@ dependencies {
 
     // Minecraft 26.3's client dependency metadata exposes the base LWJGL module but not
     // GLFW or TinyFD to the compile classpath. They are supplied by the Minecraft runtime;
-    // declare the matching 26.3 LWJGL version only for compilation.
-    add("compileOnly", "org.lwjgl:lwjgl-glfw:3.4.3")
-    add("compileOnly", "org.lwjgl:lwjgl-tinyfd:3.4.3")
+    // declare the matching 26.3 LWJGL version only for compilation on those targets.
+    // Older clients already supply these modules: adding 3.4.3 there upgrades their
+    // LWJGL transitively and makes remapJar analyze unsupported Java 27 classes.
+    if (stonecutter.eval(mcVersion, ">=26.3")) {
+        add("compileOnly", "org.lwjgl:lwjgl-glfw:3.4.3")
+        add("compileOnly", "org.lwjgl:lwjgl-tinyfd:3.4.3")
+    }
 
     // Flashback is the host mod we hook into. Compile-only: it is provided by the player's
     // install at runtime (declared as a hard dependency in fabric.mod.json). The Modrinth maven
