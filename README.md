@@ -38,14 +38,18 @@ Un petit mod **client Fabric** qui ajoute des réglages manquants au mod
 
 ## Télémétrie
 
-Statistiques d'usage **anonymes** activées par défaut (PostHog, région EU), pour suivre
+Statistiques d'usage **pseudonymes** activées par défaut (PostHog, région EU), pour suivre
 l'adoption et les versions utilisées. **Désactivable** de trois façons :
 
 - `config/flashbacksettings.json` → `"telemetry": false` ;
 - propriété JVM `-Dflashbacksettings.telemetry=false` ;
 - automatiquement OFF en environnement de développement.
 
-Aucune IP ni géolocalisation collectée ; un `install_id` anonyme et persistant sert d'identifiant.
+Un `install_id` aléatoire et persistant permet de relier les événements d'une même installation :
+ce n'est pas une garantie d'anonymat. L'adresse IP réseau est visible par PostHog lors d'un envoi,
+même si le payload demande `$ip: null`. PostHog peut enrichir les événements avec une localisation
+dérivée de l'IP (notamment ville, code postal et coordonnées) ; ces propriétés ont été observées
+sur `mod_loaded` dans le projet existant selon l'audit parent. Aucun ajout de collecte n'est introduit.
 
 ## Build
 
