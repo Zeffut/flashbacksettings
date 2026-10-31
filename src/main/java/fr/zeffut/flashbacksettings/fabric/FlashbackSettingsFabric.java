@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Fabric client entrypoint. Resolves config (so {@code install_id} / telemetry opt-out are set
- * before Flashback first reads its replay folder), emits the standard {@code client_started} /
- * {@code mod_loaded} events plus a {@code fbs_*} event describing the replay-folder override, and
- * logs the effective folder. The actual redirection happens in {@code FlashbackMixin}.
+ * before Flashback first reads its replay folder), emits a single {@code mod_loaded} event per
+ * launch (carrying the environment and whether the replay folder is overridden), and logs the
+ * effective folder. The actual redirection happens in {@code FlashbackMixin}.
  */
 public class FlashbackSettingsFabric implements ClientModInitializer {
     private static final Logger LOG = LoggerFactory.getLogger("Flashback Settings");
@@ -29,16 +29,15 @@ public class FlashbackSettingsFabric implements ClientModInitializer {
         String mc = Platform.mcVersion();
         String modVer = Platform.modVersion();
 
-        Map<String, Object> started = new LinkedHashMap<>();
-        started.put("loader", "fabric");
-        started.put("installed_mods_count", Platform.installedModCount());
-        started.put("os_name", System.getProperty("os.name"));
-        started.put("os_arch", System.getProperty("os.arch"));
-        started.put("java_version", System.getProperty("java.version"));
-        Telemetry.capture("client_started", "mod-fabric", mc, modVer, started);
-        Telemetry.capture("mod_loaded", "mod-fabric", mc, modVer, Map.of("loader", "fabric"));
-        Telemetry.captureModEvent("replay_folder", "mod-fabric", mc, modVer,
-                Map.of("custom_folder", custom != null));
+        // One event per launch: mod_loaded carries what client_started and fbs_replay_folder used to.
+        Map<String, Object> loaded = new LinkedHashMap<>();
+        loaded.put("loader", "fabric");
+        loaded.put("installed_mods_count", Platform.installedModCount());
+        loaded.put("os_name", System.getProperty("os.name"));
+        loaded.put("os_arch", System.getProperty("os.arch"));
+        loaded.put("java_version", System.getProperty("java.version"));
+        loaded.put("custom_folder", custom != null);
+        Telemetry.capture("mod_loaded", "mod-fabric", mc, modVer, loaded);
 
         LOG.info("[Flashback Settings] initialized on fabric {} — replay folder override: {} (telemetry={})",
                 mc, custom != null ? custom : "(default)", Telemetry.enabled());

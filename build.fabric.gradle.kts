@@ -175,7 +175,7 @@ if (modrinthToken.isPresent) {
         displayName.set("${property("mod.name")} ${property("mod.version")} (Fabric $mcVersion)")
         version.set("${property("mod.version")}+fabric-$mcVersion")
         type = me.modmuss50.mpp.ReleaseType.STABLE
-        changelog.set("Minecraft 26.3 Fabric support.")
+        changelog.set("Less telemetry sent: a single anonymous event per launch, and the auto-updater only reports checks that find an update or fail.")
         modLoaders.add("fabric")
         modrinth {
             projectId.set("mOIDKWOa")
