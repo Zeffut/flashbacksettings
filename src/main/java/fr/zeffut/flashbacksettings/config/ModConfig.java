@@ -114,11 +114,7 @@ public final class ModConfig {
             cfg.installId = UUID.randomUUID().toString();
             dirty = true;
         }
-        // Seed the user-facing auto-update options so the generated file documents them.
-        dirty |= cfg.settings.putIfAbsent("auto_update", "true") == null;
-        dirty |= cfg.settings.putIfAbsent("update_owner", "Zeffut") == null;
-        dirty |= cfg.settings.putIfAbsent("update_all", "false") == null;
-        dirty |= cfg.settings.putIfAbsent("update_exclude", "") == null;
+
         if (dirty) cfg.save();
         return cfg;
     }

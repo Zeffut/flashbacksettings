@@ -43,6 +43,19 @@ jobs:
       - name: Build and test Minecraft ${{ matrix.minecraft }} Fabric
         run: ./gradlew :${{ matrix.minecraft }}-fabric:clean :${{ matrix.minecraft }}-fabric:build :${{ matrix.minecraft }}-fabric:test --stacktrace --no-daemon
 
+      - name: Verify manual-update-only sources and packaged jar
+        shell: bash
+        run: |
+          shopt -s nullglob
+          jars=(versions/${{ matrix.minecraft }}-fabric/build/libs/*-fabric-*.jar)
+          count=0
+          for jar in "${jars[@]}"; do
+            [[ "$jar" == *-sources.jar ]] && continue
+            VERIFY_JAR="$jar" python3 -m unittest discover -s tests -v
+            count=$((count+1))
+          done
+          test "$count" -eq 1
+
       - name: Upload remapped mod jar
         uses: actions/upload-artifact@v4
         with:

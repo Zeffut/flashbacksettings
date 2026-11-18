@@ -38,14 +38,28 @@ Un petit mod **client Fabric** qui ajoute des réglages manquants au mod
 
 ## Télémétrie
 
-Statistiques d'usage **anonymes** activées par défaut (PostHog, région EU), pour suivre
-l'adoption et les versions utilisées. **Désactivable** de trois façons :
+Statistiques d'usage **pseudonymes**, activées par défaut, envoyées à PostHog (point
+de collecte EU). Un événement `mod_loaded` est envoyé au lancement avec un identifiant
+d'installation persistant, un horodatage, les versions du mod, Minecraft et Java, le
+chargeur, le système et son architecture, le nombre de mods et l'activation éventuelle
+d'un dossier de replay personnalisé (pas son chemin). Le fournisseur reçoit une connexion
+réseau et peut donc voir l'adresse IP ; nous ne pouvons pas garantir son traitement ou sa
+géolocalisation côté fournisseur. **Désactivation avant lancement** :
 
 - `config/flashbacksettings.json` → `"telemetry": false` ;
 - propriété JVM `-Dflashbacksettings.telemetry=false` ;
 - automatiquement OFF en environnement de développement.
 
-Aucune IP ni géolocalisation collectée ; un `install_id` anonyme et persistant sert d'identifiant.
+La propriété JVM prime sur le fichier. Un changement du fichier nécessite un redémarrage.
+
+## Mises à jour
+
+Cette version ne télécharge ni n'installe automatiquement de mods. Choisissez et téléchargez
+vous-même les mises à jour depuis une source de confiance. Les anciennes versions pouvaient
+effectuer des téléchargements automatiques. Remplacez manuellement leur JAR avant le lancement ;
+`-Dautoupdate.enabled=false` bloque la recherche de nouveaux téléchargements mais ne garantit pas
+l'arrêt de la reprise d'opérations déjà en attente. Les fichiers `.autoupdate` déjà présents ne
+sont ni appliqués ni supprimés par cette version.
 
 ## Build
 

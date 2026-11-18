@@ -4,7 +4,7 @@ package fr.zeffut.flashbacksettings.fabric;
 import fr.zeffut.flashbacksettings.config.ModConfig;
 import fr.zeffut.flashbacksettings.platform.Platform;
 import fr.zeffut.flashbacksettings.telemetry.Telemetry;
-import fr.zeffut.flashbacksettings.update.UpdateService;
+
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -42,8 +42,7 @@ public class FlashbackSettingsFabric implements ClientModInitializer {
         LOG.info("[Flashback Settings] initialized on fabric {} — replay folder override: {} (telemetry={})",
                 mc, custom != null ? custom : "(default)", Telemetry.enabled());
 
-        // Embedded silent auto-updater (shared module; first Zeffut mod to start runs it).
-        UpdateService.start();
+
     }
 }
 //?}

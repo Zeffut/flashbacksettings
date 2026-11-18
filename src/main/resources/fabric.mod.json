@@ -3,7 +3,7 @@
   "id": "flashbacksettings",
   "version": "${version}",
   "name": "Flashback Settings",
-  "description": "Adds missing settings to the Flashback mod, starting with choosing the replay save folder. Anonymous telemetry, enabled by default and opt-out.",
+  "description": "Adds missing settings to Flashback. Pseudonymous telemetry is enabled by default; see README for data and opt-out.",
   "authors": [
     "Zeffut"
   ],
